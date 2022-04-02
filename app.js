@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.get("/",(req,res)=>{
-    res.send("Portfolio Trader API is running");
+    res.send("Portfolio Tracking API is running");
 })
 
 //import routes
