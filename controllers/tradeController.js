@@ -48,6 +48,9 @@ exports.addTrade = BigPromise(async (req, res, next) => {
         }
         price =Number.parseFloat(price)
         quantity = Number.parseInt(quantity)
+        if(quantity<=0 || price<=0){
+            return next(new CustomError("Quantity and price should be greater than 0", 400));
+        }
         const newTrade = await trade.create({ticker,price,quantity});
         const savedTrade = await newTrade.save();
         res.status(201).json({
@@ -74,6 +77,9 @@ exports.updateTradeById = BigPromise(async (req, res, next) => {
         let newPrice = Number.parseFloat(data.price);
         let newQuantity = Number.parseInt(data.quantity);
         if(tradeMethod.toLowerCase() === "sell"){
+            if(newQuantity===0){
+                return next(new CustomError("Quantity should be greater than 0", 400));
+            }
             if(newQuantity > oldQuantity){
                 return next(new CustomError("Quantity is greater than the available quantity", 400));
             }
@@ -95,6 +101,12 @@ exports.updateTradeById = BigPromise(async (req, res, next) => {
             });
 
         }else if(tradeMethod.toLowerCase() === "buy"){
+            if(newQuantity<=0){
+                return next(new CustomError("Quantity should be greater than 0", 400));
+            }
+            if(newPrice<0){
+                return next(new CustomError("Price should be greater than 0", 400));
+            }
             let currentNetWorth = oldPrice * oldQuantity;
             let newNetWorth = newPrice * newQuantity;
             currentNetWorth = currentNetWorth + newNetWorth;

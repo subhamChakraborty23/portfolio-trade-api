@@ -53,6 +53,7 @@ Example:
 * A trade of a security can be removed from the portfolio reverting the changes it had when it was added.
 * The HTTP DELETE method deletes that trade which has an id and reflects the changes in the portfolio as well.
 
-### GET `{{URL}}/trade/returns`
+### GET `{{URL}}/trade/returns?price=<price>`
+* Fetch the returns for a security based on the current price provided.
 * The cumulative returns is calculated as `SUM((CURRENT_PRICE[ticker] - AVERAGE_BUY_PRICE[ticker]) * CURRENT_QUANTITY[ticker])` and this sum is returned as response.
 * The GET method fetches the cumulative return value of the current portfolio.
