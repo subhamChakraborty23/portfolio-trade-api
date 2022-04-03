@@ -16,6 +16,8 @@ The main objective of this task is to create an API which can track the changes 
   price : float 
   quantiy : int 
   ticker : string
+  createdAt : date time
+  updatedAt : date time
   
 ```
 ## API Endpoints
