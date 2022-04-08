@@ -67,8 +67,8 @@ exports.addTrade = BigPromise(async (req, res, next) => {
         }
         const newTrade = await trade.create({ticker,price,quantity});
         const savedTrade = await newTrade.save();
-        let tradeMethod = "buy"
-        const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod});
+        
+        const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod : "buy"});
         const savedTransaction = await newTransaction.save();
         res.status(201).json({
             success: true,
@@ -170,8 +170,8 @@ exports.deleteTradeById = BigPromise(async (req, res, next) => {
         let ticker = deletedTrade.ticker
         let price = deletedTrade.price
         let quantity = deletedTrade.quantity
-        let tradeMethod = "sell"
-        const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod});
+        
+        const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod:"sell"});
         const savedTransaction = await newTransaction.save();
         res.status(200).json({
             success: true,
