@@ -12,12 +12,24 @@ The main objective of this task is to create an API which can track the changes 
 
 ## DB Schema
 ```
+  for trade portfolio ->
+
   id : object id
   price : float 
   quantiy : int 
   ticker : string
   createdAt : date time
   updatedAt : date time
+
+  for trade transaction ->
+
+  id : object id
+  price : float 
+  quantiy : int 
+  ticker : string
+  tradeType: string
+  createdAt : date time
+
   
 ```
 ## API Endpoints
@@ -34,6 +46,9 @@ Example:
     "quantity": 6,
     "ticker": "WIPRO"
 ```
+### GET `{{URL}}/trade`
+* Get all trades for every transaction type adding,updating and deleting a trade from portfolio
+* The HTTP GET method returns a list of all transactions done by the user. 
 ### PUT `{{URL}}/trade/:id?method=<type_of_trade>` 
 * update a trade for security already present in the portfolio
 * type_of_trade can either BUY or SELL
