@@ -1,4 +1,5 @@
 const trade = require('../models/trade');
+const transactions = require('../models/transaction');
 const BigPromise = require("../middlewares/bigPromise");
 const CustomError = require("../utils/customError");
 
@@ -10,6 +11,19 @@ exports.getAllTrades = BigPromise(async (req, res, next) => {
             success: true,
             count: trades.length,
             data: trades
+        });
+    } catch (err) {
+        next(new CustomError(err.message, err.statusCode));
+    }
+})
+
+exports.getAllTransactions = BigPromise(async (req, res, next) => {
+    try {
+        const transactions = await transactions.find();
+        res.status(200).json({
+            success: true,
+            count: transactions.length,
+            data: transactions
         });
     } catch (err) {
         next(new CustomError(err.message, err.statusCode));
@@ -53,14 +67,21 @@ exports.addTrade = BigPromise(async (req, res, next) => {
         }
         const newTrade = await trade.create({ticker,price,quantity});
         const savedTrade = await newTrade.save();
+        let tradeMethod = "buy"
+        const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod});
+        const savedTransaction = await newTransaction.save();
         res.status(201).json({
             success: true,
-            data: savedTrade
+            data: savedTrade,
+            trade: savedTrade
+
         });
     } catch (err) {
         next(new CustomError(err.message, err.statusCode));
     }
 })
+
+
 
 //update a trade by id
 exports.updateTradeById = BigPromise(async (req, res, next) => {
@@ -92,12 +113,16 @@ exports.updateTradeById = BigPromise(async (req, res, next) => {
 
             const updatedTrade = await trade.findByIdAndUpdate(id, {
                 $set: {
-                    quantity: newQuantity
+                    quantity: newQuantity,
                 }
             }, {new: true});
+
+            const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod});
+            const savedTransaction = await newTransaction.save();
             res.status(200).json({
                 success: true,
-                data: updatedTrade
+                data: updatedTrade,
+                trade: savedTransaction
             });
 
         }else if(tradeMethod.toLowerCase() === "buy"){
@@ -116,12 +141,15 @@ exports.updateTradeById = BigPromise(async (req, res, next) => {
             const updatedTrade = await trade.findByIdAndUpdate(id, {    
                 $set: {
                     price: avgPrice,
-                    quantity: totalQuantity
+                    quantity: totalQuantity,
                 }
             }, {new: true});
+            const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod});
+            const savedTransaction = await newTransaction.save();
             res.status(200).json({
                 success: true,
-                data: updatedTrade
+                data: updatedTrade,
+                trade: savedTransaction
             });
         }else{
             return next(new CustomError("Please provide a valid method", 400));
@@ -139,9 +167,16 @@ exports.deleteTradeById = BigPromise(async (req, res, next) => {
         if (!deletedTrade) {
             next(new CustomError("Trade not found", 404));
         }
+        let ticker = deletedTrade.ticker
+        let price = deletedTrade.price
+        let quantity = deletedTrade.quantity
+        let tradeMethod = "sell"
+        const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod});
+        const savedTransaction = await newTransaction.save();
         res.status(200).json({
             success: true,
-            data: deletedTrade
+            data: deletedTrade,
+            trade: savedTransaction
         });
     } catch (err) {
         next(new CustomError(err.message, err.statusCode));

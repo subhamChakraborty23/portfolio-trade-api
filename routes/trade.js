@@ -7,10 +7,12 @@ const {
     addTrade,
     updateTradeById,
     deleteTradeById,
-    calculateReturns
+    calculateReturns,
+    getAllTransactions
 } = require("../controllers/tradeController");
 
 router.get("/portfolio", getAllTrades);
+router.get("/",getAllTransactions);
 router.get("/returns", calculateReturns);
 router.get("/:id", getTradeById);
 router.post("/", addTrade);
