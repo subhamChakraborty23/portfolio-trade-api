@@ -68,7 +68,7 @@ exports.addTrade = BigPromise(async (req, res, next) => {
         const newTrade = await trade.create({ticker,price,quantity});
         const savedTrade = await newTrade.save();
         
-        const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod : "buy"});
+        const newTransaction = await transactions.create({ticker,price,quantity,tradeType : "buy"});
         const savedTransaction = await newTransaction.save();
         res.status(201).json({
             success: true,
@@ -117,7 +117,7 @@ exports.updateTradeById = BigPromise(async (req, res, next) => {
                 }
             }, {new: true});
 
-            const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod});
+            const newTransaction = await transactions.create({ticker,price,quantity,tradeType:tradeMethod});
             const savedTransaction = await newTransaction.save();
             res.status(200).json({
                 success: true,
@@ -144,7 +144,7 @@ exports.updateTradeById = BigPromise(async (req, res, next) => {
                     quantity: totalQuantity,
                 }
             }, {new: true});
-            const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod});
+            const newTransaction = await transactions.create({ticker,price,quantity,tradeType:tradeMethod});
             const savedTransaction = await newTransaction.save();
             res.status(200).json({
                 success: true,
@@ -171,7 +171,7 @@ exports.deleteTradeById = BigPromise(async (req, res, next) => {
         let price = deletedTrade.price
         let quantity = deletedTrade.quantity
         
-        const newTransaction = await transactions.create({ticker,price,quantity,tradeMethod:"sell"});
+        const newTransaction = await transactions.create({ticker,price,quantity,tradeType:"sell"});
         const savedTransaction = await newTransaction.save();
         res.status(200).json({
             success: true,
