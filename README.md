@@ -1,5 +1,5 @@
 
-## Smallcase Backend Assignment :[Portfolio Tracking API]
+## Portfolio Tracking API
 
 The main objective of this task is to create an API which can track the changes made by an user on his portfolio of different securities.
 
