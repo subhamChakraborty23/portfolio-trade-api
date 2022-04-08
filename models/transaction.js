@@ -8,7 +8,6 @@ const transactionSchema = new mongoose.Schema({
         trim: true,
         minlength: 1,
         maxlength: 10,  
-        unique: true,
         validate: {
             validator: (value) => {
                 return validator.isAlphanumeric(value);
@@ -43,7 +42,6 @@ const transactionSchema = new mongoose.Schema({
         trim: true,
         minlength: 1,
         maxlength: 10,  
-        unique: true,
         validate: {
             validator: (value) => {
                 return validator.isAlphanumeric(value);
