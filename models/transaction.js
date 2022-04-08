@@ -39,9 +39,7 @@ const transactionSchema = new mongoose.Schema({
     tradeType:{
         type: String,
         required: true,
-        trim: true,
-        minlength: 1,
-        maxlength: 10,  
+        trim: true, 
         validate: {
             validator: (value) => {
                 return validator.isAlphanumeric(value);
