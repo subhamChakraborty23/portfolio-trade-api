@@ -117,7 +117,7 @@ exports.updateTradeById = BigPromise(async (req, res, next) => {
                 }
             }, {new: true});
 
-            const newTransaction = await transactions.create({ticker,price,quantity,tradeType:tradeMethod});
+            const newTransaction = await transactions.create({ticker:isTradeExist.ticker,price:isTradeExist.price,quantity:newQuantity,tradeType:tradeMethod});
             const savedTransaction = await newTransaction.save();
             res.status(200).json({
                 success: true,
@@ -144,7 +144,7 @@ exports.updateTradeById = BigPromise(async (req, res, next) => {
                     quantity: totalQuantity,
                 }
             }, {new: true});
-            const newTransaction = await transactions.create({ticker,price,quantity,tradeType:tradeMethod});
+            const newTransaction = await transactions.create({ticker:isTradeExist.ticker,price:newPrice,quantity:newQuantity,tradeType:tradeMethod});
             const savedTransaction = await newTransaction.save();
             res.status(200).json({
                 success: true,
