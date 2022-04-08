@@ -19,11 +19,11 @@ exports.getAllTrades = BigPromise(async (req, res, next) => {
 
 exports.getAllTransactions = BigPromise(async (req, res, next) => {
     try {
-        const transactions = await transactions.find();
+        const allTransactions = await transactions.find();
         res.status(200).json({
             success: true,
-            count: transactions.length,
-            data: transactions
+            count: allTransactions.length,
+            data: allTransactions
         });
     } catch (err) {
         next(new CustomError(err.message, err.statusCode));
